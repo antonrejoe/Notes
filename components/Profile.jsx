@@ -1,14 +1,13 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { account } from "../appwrite/appwriteConfig.js";
 import { useState, useEffect } from "react";
-import Signup from "./Signup";
-
-import "../assets/css/Profile/index.css";
-import TodoForm from "./TodoForm";
+import { Account, Client } from "appwrite";
 
 const Profile = () => {
-  const navigate = useNavigate();
+  const client = new Client();
+
+  const account = new Account(client);
+
+  client.setEndpoint("http://localhost/v1").setProject("64212d46cfb5216a4094");
 
   const [userDetails, setuserDetails] = useState();
   console.log(userDetails);
@@ -29,7 +28,6 @@ const Profile = () => {
   const handleLogout = async () => {
     try {
       await account.deleteSession("current");
-      navigate("/login");
     } catch (error) {
       console.log(error);
     }
@@ -39,21 +37,18 @@ const Profile = () => {
     <>
       {userDetails ? (
         <>
-          <div class="navbar">
-            <h3>{userDetails.name}</h3>
-            <button class="logout_btn" onClick={handleLogout}>
+          <div className=" grid m-0 w-screen bg-cyan-600  grid-flow-col place-items-end text-center grid-cols-1">
+            <h3 className="my-auto p-2">{userDetails.name}</h3>
+            <button className="p-4 bg-blue-500" onClick={handleLogout}>
               Logout
             </button>
           </div>
-          <TodoForm />
         </>
       ) : (
         <>
-          <div class="signUp_direct">
+          <div className="">
             <img src="/Ancient-Aliens.jpg" alt="Ancient aliens were real" />
-            <Link to="/signup">
-              consider Signing in or else aliens will take you away
-            </Link>
+            consider Signing in or else aliens will take you away
             <p> </p>
           </div>
         </>

@@ -1,16 +1,16 @@
 import React from "react";
-import { account } from "../appwrite/appwriteConfig.js";
-import { Link, useNavigate } from "react-router-dom";
-import { TextField } from "@mui/material";
 import { useState } from "react";
-import "../assets/css/Login/index.css";
-
+import { Account, Client } from "appwrite";
 const Login = () => {
-  const navigate = useNavigate();
+  const client = new Client();
+
+  const account = new Account(client);
+
+  client.setEndpoint("http://localhost/v1").setProject("64212d46cfb5216a4094");
 
   const googleLogin = (e) => {
     e.preventDefault();
-    account.createOAuth2Session("google", "http://localhost:4000/profile");
+    account.createOAuth2Session("google", "http://localhost:3000/profile");
   };
 
   const [user, setuser] = useState({
@@ -20,7 +20,6 @@ const Login = () => {
   const loginUser = async (e) => {
     try {
       await account.createEmailSession(user.email, user.password);
-      navigate("/profile");
       console.log(e);
     } catch (error) {
       console.log(error);
@@ -29,10 +28,11 @@ const Login = () => {
 
   return (
     <>
-      <div class="login_container">
+      <div className=" drop-shadow-sm grid place-items-center bg-cyan-800 w-fit m-auto h-fit p-4 rounded ">
         <div>Login</div>
 
         <input
+          className="m-1 my-4 p-3 bg-blue-100  rounded"
           type="text"
           name="name"
           id="name"
@@ -44,6 +44,7 @@ const Login = () => {
           }}
         />
         <input
+          className="m-1 my-4 p-3 bg-blue-100  rounded"
           type="password"
           label="password"
           name="password"
@@ -56,12 +57,21 @@ const Login = () => {
             });
           }}
         />
-        <button onClick={loginUser} class="login_btn">
-          Submit
-        </button>
-        <button onClick={googleLogin}>google</button>
+        <div>
+          <button
+            onClick={loginUser}
+            className="p-3 rounded-md bg-blue-400 mx-5 m-3 px-6"
+          >
+            Submit
+          </button>
+          <button
+            onClick={googleLogin}
+            className="p-3 rounded-md bg-blue-400 mx-5 m-3 px-6"
+          >
+            google
+          </button>
+        </div>
       </div>
-      <Link to="/signup">Don't have an account ?</Link>
     </>
   );
 };

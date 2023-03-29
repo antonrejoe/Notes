@@ -1,10 +1,11 @@
 import React from "react";
-import { useState, useEffect } from "react";
-import { Client, Account } from "appwrite";
-
+import { useState } from "react";
+import { Account, Client } from "appwrite";
 const client = new Client();
 
 const account = new Account(client);
+
+client.setEndpoint("http://localhost/v1").setProject("64212d46cfb5216a4094");
 
 const Signup = () => {
   const [user, setuser] = useState({
@@ -18,8 +19,8 @@ const Signup = () => {
       e.preventDefault();
       account.createOAuth2Session(
         "google",
-        "http://localhost:4000/profile",
-        "http://localhost:4000/login"
+        "http://localhost:3000/profile",
+        "http://localhost:3000/login"
       );
     } catch (error) {
       console.log(error);
@@ -30,7 +31,7 @@ const Signup = () => {
     e.preventDefault();
 
     try {
-      const promise = await account.create(
+      const promise = account.create(
         crypto.randomUUID(),
         user.email,
         user.password,
@@ -120,7 +121,6 @@ const Signup = () => {
             onClick={googleLogin}
             className=" p-3 rounded-md bg-blue-400 mx-5 w-fit"
           >
-            {" "}
             google
           </button>
         </div>
