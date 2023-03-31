@@ -1,16 +1,24 @@
+"use client";
 import React from "react";
 import { useState } from "react";
 import { Account, Client } from "appwrite";
+import { useRouter } from "next/navigation";
 const Login = () => {
+  const router = useRouter();
   const client = new Client();
 
   const account = new Account(client);
 
-  client.setEndpoint("http://localhost/v1").setProject("64212d46cfb5216a4094");
+  client
+    .setEndpoint(process.env.NEXT_PUBLIC_END_PT)
+    .setProject(process.env.NEXT_PUBLIC_PROJECT_ID);
 
   const googleLogin = (e) => {
     e.preventDefault();
     account.createOAuth2Session("google", "http://localhost:3000/profile");
+    setTimeout(() => {
+      router.push("/profile");
+    }, 1700);
   };
 
   const [user, setuser] = useState({
