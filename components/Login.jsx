@@ -28,7 +28,11 @@ const Login = () => {
   const loginUser = async (e) => {
     try {
       await account.createEmailSession(user.email, user.password);
-      console.log(e);
+      const user_id = JSON.parse(e).$id;
+      console.log(user_id);
+      setTimeout(() => {
+        router.push("/profile");
+      }, 1700);
     } catch (error) {
       console.log(error);
     }

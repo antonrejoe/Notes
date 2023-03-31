@@ -1,13 +1,25 @@
 import React from "react";
 import { useState } from "react";
 import { Account, Client } from "appwrite";
-const client = new Client();
+import { useRouter } from "next/router";
 
+const sdk = require("node-appwrite");
+const client_sdk = new sdk.Client();
+const client = new Client();
+const databases_sdk = new sdk.Databases(client_sdk);
 const account = new Account(client);
 
-client.setEndpoint("http://localhost/v1").setProject("64212d46cfb5216a4094");
+client
+  .setEndpoint(process.env.NEXT_PUBLIC_END_PT)
+  .setProject(process.env.NEXT_PUBLIC_PROJECT_ID);
+
+client_sdk
+  .setEndpoint(process.env.NEXT_PUBLIC_END_PT)
+  .setProject(process.env.NEXT_PUBLIC_PROJECT_ID)
+  .setKey(process.env.NEXT_PUBLIC_API_KEY);
 
 const Signup = () => {
+  const router = useRouter();
   const [user, setuser] = useState({
     name: "",
     email: "",
@@ -22,6 +34,9 @@ const Signup = () => {
         "http://localhost:3000/profile",
         "http://localhost:3000/login"
       );
+      setTimeout(() => {
+        router.push("/profile");
+      }, 1700);
     } catch (error) {
       console.log(error);
     }
@@ -41,6 +56,24 @@ const Signup = () => {
       promise.then(
         function (response) {
           console.log(response);
+          // for creating a collection for the user
+          const promise_1 = databases_sdk.createCollection(
+            process.env.NEXT_PUBLIC_PRIMARY_DB_ID,
+            crypto.randomUUID(),
+            user.name
+          );
+
+          promise_1.then(
+            function (response) {
+              console.log(response);
+              setTimeout(() => {
+                router.push("/profile");
+              }, 1700);
+            },
+            function (err) {
+              console.log(err);
+            }
+          );
         },
         function (error) {
           console.log(error);

@@ -49,20 +49,6 @@ module.exports = async function (req, res) {
       .setSelfSigned(true);
   }
 
-  const { GiphyFetch } = require("@giphy/js-fetch-api");
-
-  // use @giphy/js-fetch-api to fetch gifs, instantiate with your api key
-  const gf = new GiphyFetch(req.env["GIPHY_API_KEY"]);
-
-  // parse event data
-  const data = JSON.parse(req.env["APPWRITE_FUNCTION_EVENT_DATA"]);
-
-  // fetch gif based on message
-  const gifs = await gf.search(data.message, { limit: 1 });
-
-  // get the meme URL from the results
-  const gif = gifs.data[0] ? gifs.data[0].images.downsized.url : "";
-
   // get document information to update
   const collectionId = data.$collection;
   const documentId = data.$id;
