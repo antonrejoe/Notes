@@ -3,12 +3,12 @@ import React from "react";
 import { useState } from "react";
 import { Account, Client } from "appwrite";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 const Login = () => {
   const router = useRouter();
   const client = new Client();
 
   const account = new Account(client);
-
   client
     .setEndpoint(process.env.NEXT_PUBLIC_END_PT)
     .setProject(process.env.NEXT_PUBLIC_PROJECT_ID);
@@ -28,8 +28,7 @@ const Login = () => {
   const loginUser = async (e) => {
     try {
       await account.createEmailSession(user.email, user.password);
-      const user_id = JSON.parse(e).$id;
-      console.log(user_id);
+
       setTimeout(() => {
         router.push("/profile");
       }, 1700);
@@ -83,6 +82,7 @@ const Login = () => {
             google
           </button>
         </div>
+        <Link href="/signup"> Signup </Link>
       </div>
     </>
   );

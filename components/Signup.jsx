@@ -1,12 +1,13 @@
+"use client";
+
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Account, Client } from "appwrite";
 import { useRouter } from "next/router";
-
+import Link from "next/link";
 const sdk = require("node-appwrite");
 const client_sdk = new sdk.Client();
 const client = new Client();
-const databases_sdk = new sdk.Databases(client_sdk);
 const account = new Account(client);
 
 client
@@ -56,19 +57,10 @@ const Signup = () => {
       promise.then(
         function (response) {
           console.log(response);
-          // for creating a collection for the user
-          const promise_1 = databases_sdk.createCollection(
-            process.env.NEXT_PUBLIC_PRIMARY_DB_ID,
-            crypto.randomUUID(),
-            user.name
-          );
-
-          promise_1.then(
-            function (response) {
-              console.log(response);
-              setTimeout(() => {
-                router.push("/profile");
-              }, 1700);
+          const accnt_promise = account.get();
+          accnt_promise.then(
+            (res) => {
+              console.log(res);
             },
             function (err) {
               console.log(err);
@@ -82,6 +74,32 @@ const Signup = () => {
     } catch (error) {
       console.log(error);
     }
+
+    // !  for creating collection
+
+    // const promise_1 = databases_sdk.createCollection(
+    //   process.env.NEXT_PUBLIC_PRIMARY_DB_ID,
+    //   crypto.randomUUID(),
+    //   userID.name
+    //   [
+    //     Permission.update(Role.user(userID)),
+    //     Permission.read(Role.user(userID)),
+    //     Permission.delete(Role.user(userID)),
+    //     Permission.create(Role.user(userID)),
+    //   ]
+    // );
+
+    // promise_1.then(
+    //   function (response) {
+    //     console.log(response);
+
+    // ! for creating a collection for the user
+    //     setTimeout(() => {
+    //       router.push("/profile");
+    //     }, 1700);
+    //   },
+    //   (err) => console.log(err)
+    // );
   };
   return (
     <>
@@ -157,6 +175,7 @@ const Signup = () => {
             google
           </button>
         </div>
+        <Link href="/login"> login </Link>
       </div>
     </>
   );

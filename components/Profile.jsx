@@ -14,7 +14,6 @@ const Profile = () => {
   client.setEndpoint("http://localhost/v1").setProject("64212d46cfb5216a4094");
 
   const [userDetails, setuserDetails] = useState();
-  console.log(userDetails);
 
   useEffect(() => {
     const getData = account.get();
