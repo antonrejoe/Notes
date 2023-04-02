@@ -6,6 +6,7 @@ import { Account, Client } from "appwrite";
 import { useRouter } from "next/navigation";
 import Dashboard from "./Dashboard";
 import Search from "./Search";
+
 const Profile = () => {
   const client = new Client();
   const router = useRouter();

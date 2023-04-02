@@ -44,10 +44,15 @@ const Dashboard = () => {
   const create_doc = () => {
     const promise = databases.createDocument(
       process.env.NEXT_PUBLIC_PRIMARY_DB_ID,
-      process.env.NEXT_PUBLIC_COLLECTION_ID,
+      process.env.NEXT_PUBLIC_SECONDARY_COLLECTION_ID,
       crypto.randomUUID(),
       { content: "" },
-      []
+      [
+        Permission.read(Role.user(userId)),
+        Permission.write(Role.user(userId)),
+        Permission.delete(Role.user(userId)),
+        Permission.update(Role.user(userId)),
+      ]
     );
     promise.then(
       function (response) {
@@ -63,6 +68,7 @@ const Dashboard = () => {
       }
     );
   };
+
   return (
     <>
       <main>

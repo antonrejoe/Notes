@@ -1,4 +1,36 @@
 {
     "projectId": "64212d46cfb5216a4094",
-    "projectName": "Notes_app_0"
+    "projectName": "Notes_app_0",
+    "functions": [
+        {
+            "$id": "64291dfd989b3037b408",
+            "name": "db_master",
+            "runtime": "node-16.0",
+            "path": "functions/db_master",
+            "entrypoint": "src/index.js",
+            "ignore": [
+                "node_modules",
+                ".npm"
+            ],
+            "execute": [],
+            "events": [],
+            "schedule": "",
+            "timeout": 15
+        },
+        {
+            "$id": "642971feaa0d543c7f19",
+            "name": "db_master",
+            "runtime": "node-16.0",
+            "path": "functions/db_master",
+            "entrypoint": "src/index.js",
+            "ignore": [
+                "node_modules",
+                ".npm"
+            ],
+            "execute": [],
+            "events": [],
+            "schedule": "",
+            "timeout": 15
+        }
+    ]
 }

@@ -50,26 +50,17 @@ module.exports = async function (req, res) {
   }
 
   // get document information to update
-  const collectionId = data.$collection;
-  const documentId = data.$id;
-  const { user, room, message, $read, $write } = data;
-  const document = {
-    user,
-    room,
-    message,
-    meme: gif,
-  };
-
   try {
-    await database.updateDocument(
-      collectionId,
-      documentId,
-      document,
-      $read,
-      $write
+    await database.createCollection(
+      req.env["APPWRITE_FUNCTION_PRIMARY_DB_ID"],
+      crypto.randomUUID(),
+      crypto.randomUUID()
     );
+    console.log("function executed");
     res.json({ success: true });
   } catch (e) {
     res.send(`Unable to update meme for message ${e}}`, 400);
   }
 };
+
+// Init SDK
