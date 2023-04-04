@@ -24,15 +24,15 @@ module.exports = async function (req, res) {
   const client = new sdk.Client();
 
   // You can remove services you don't use
-  let account = new sdk.Account(client);
-  let avatars = new sdk.Avatars(client);
+  // let account = new sdk.Account(client);
+  // let avatars = new sdk.Avatars(client);
   let database = new sdk.Database(client);
-  let functions = new sdk.Functions(client);
-  let health = new sdk.Health(client);
-  let locale = new sdk.Locale(client);
-  let storage = new sdk.Storage(client);
-  let teams = new sdk.Teams(client);
-  let users = new sdk.Users(client);
+  // let functions = new sdk.Functions(client);
+  // let health = new sdk.Health(client);
+  // let locale = new sdk.Locale(client);
+  // let storage = new sdk.Storage(client);
+  // let teams = new sdk.Teams(client);
+  // let users = new sdk.Users(client);
 
   if (
     !req.env["APPWRITE_FUNCTION_ENDPOINT"] ||
@@ -56,10 +56,9 @@ module.exports = async function (req, res) {
       crypto.randomUUID(),
       crypto.randomUUID()
     );
-    console.log("function executed");
     res.json({ success: true });
   } catch (e) {
-    res.send(`Unable to update meme for message ${e}}`, 400);
+    res.toString(e);
   }
 };
 

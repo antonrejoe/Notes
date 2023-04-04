@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-
+import React, { useState, useEffect } from "react";
+import usePromise from "react-promise";
 import { Client, Databases, Functions } from "appwrite";
 
 const client = new Client();
@@ -10,10 +10,8 @@ client
   .setEndpoint(process.env.NEXT_PUBLIC_END_PT)
   .setProject(process.env.NEXT_PUBLIC_PROJECT_ID);
 
-const promise = databases.listDocuments(
-  process.env.NEXT_PUBLIC_PRIMARY_DB_ID,
-  process.env.NEXT_PUBLIC_SECONDARY_COLLECTION_ID
-);
+// ? for executing the fn.
+
 const functions = new Functions(client);
 
 function hello() {
@@ -22,33 +20,42 @@ function hello() {
   promise.then(
     function (response) {
       console.log(response); // Success
-      console.log("Success");
     },
     function (error) {
       console.log(error); // Failure
     }
   );
 }
+
 const Document_board = () => {
-  const [doc, setdoc] = useState();
+  const [documents, setDocuments] = useState([]);
+  const [docEmpty, setDocEmpty] = useState(true);
+  useEffect(() => {
+    const list_Doc = databases.listDocuments(
+      process.env.NEXT_PUBLIC_PRIMARY_DB_ID,
+      process.env.NEXT_PUBLIC_SECONDARY_COLLECTION_ID
+    );
 
-  promise.then(
-    function (response) {
-      for (let i = 0; i < response.documents.length; i++) {
-        const element = response.documents[i];
-        console.log(element);
+    list_Doc.then(
+      (res) => {
+        setDocuments(res.documents);
+        console.log(documents);
+        if (documents) {
+          setDocEmpty(false);
+        }
+      },
+      (err) => {
+        console.log(err);
       }
-    },
-    function (error) {
-      console.log(error); // Failure
-    }
-  );
-  return (
-    <main>
-      <button onClick={hello}>hello</button>
+    );
+  }, [docEmpty]);
 
-      <div>Document_board</div>
-    </main>
+  return (
+    <>
+      {documents.map((e) => {
+        <li>{e.$createdAt} </li>;
+      })}
+    </>
   );
 };
 

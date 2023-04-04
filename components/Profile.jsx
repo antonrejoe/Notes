@@ -37,6 +37,7 @@ const Profile = () => {
       console.log(error);
     }
   };
+  console.log("user details here", userDetails);
 
   return (
     <>
