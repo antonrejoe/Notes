@@ -2,9 +2,9 @@ import React from "react";
 import AddIcon from "@mui/icons-material/Add";
 import { useState, useEffect } from "react";
 import { Account, Client, Databases, Permission, Role } from "appwrite";
+import { useRouter } from "next/router";
 // const sdk = require("node-appwrite");
 // const client_sdk = new sdk.Client();
-
 const client = new Client();
 const account = new Account(client);
 
@@ -29,6 +29,8 @@ promise.then(
   }
 );
 const Dashboard = () => {
+  const router = useRouter();
+
   const [userId, setUserId] = useState();
   const [docID, setDocID] = useState({ id: "" });
 
@@ -36,7 +38,6 @@ const Dashboard = () => {
   accnt_promise.then(
     (res) => {
       setUserId(res.$id);
-      console.log(userId);
     },
     (err) => console.log(err)
   );
@@ -61,7 +62,7 @@ const Dashboard = () => {
           ...docID,
           id: response.$id,
         });
-        console.log(docID.id);
+        router.reload();
       },
       function (error) {
         console.log(error);

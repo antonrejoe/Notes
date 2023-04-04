@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
-import usePromise from "react-promise";
 import { Client, Databases, Functions } from "appwrite";
-
+import { useRouter } from "next/router";
 const client = new Client();
-
+import Document from "./Document.jsx";
 const databases = new Databases(client);
-
 client
   .setEndpoint(process.env.NEXT_PUBLIC_END_PT)
   .setProject(process.env.NEXT_PUBLIC_PROJECT_ID);
@@ -27,7 +25,9 @@ function hello() {
   );
 }
 
-const Document_board = () => {
+const Document_list = () => {
+  const router = useRouter();
+
   const [documents, setDocuments] = useState([]);
   const [docEmpty, setDocEmpty] = useState(true);
   useEffect(() => {
@@ -39,7 +39,6 @@ const Document_board = () => {
     list_Doc.then(
       (res) => {
         setDocuments(res.documents);
-        console.log(documents);
         if (documents) {
           setDocEmpty(false);
         }
@@ -49,14 +48,19 @@ const Document_board = () => {
       }
     );
   }, [docEmpty]);
-
-  return (
-    <>
-      {documents.map((e) => {
-        <li>{e.$createdAt} </li>;
-      })}
-    </>
-  );
+  if (!docEmpty) {
+    return (
+      <main className=" grid grid-flow-row my-[80px] ">
+        {documents.map((doc, key) => (
+          <Document
+            key={key}
+            heading={doc.heading}
+            id={doc.$id}
+            createdAt={doc.$createdAt}
+          />
+        ))}
+      </main>
+    );
+  }
 };
-
-export default Document_board;
+export default Document_list;
