@@ -2,6 +2,11 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import NoSSR from "react-no-ssr";
 import { Client, Databases } from "appwrite";
+import { Cookies } from "react-cookie";
+
+const cookies = new Cookies();
+
+const id = cookies.get("id");
 
 const client = new Client();
 client
@@ -10,16 +15,26 @@ client
 const db = new Databases(client);
 
 export default function document() {
-  const [docID, setDocID] = useState(" ");
+  const [document, setDocument] = useState({
+    heading: "",
+    content: " ",
+    createdAt: " ",
+  });
   useEffect(() => {
     const db_sel = db.getDocument(
       process.env.NEXT_PUBLIC_PRIMARY_DB_ID,
       process.env.NEXT_PUBLIC_SECONDARY_COLLECTION_ID,
-      "bab93054-1b21-48a7-8b17-ffbd081571ce"
+      id
     );
     db_sel.then(
       (res) => {
-        console.log(res);
+        console.log(" here is the doc", res);
+        setDocument({
+          ...document,
+          heading: res.heading,
+          content: res.content,
+          createdAt: res.$createdAt,
+        });
       },
       (err) => {
         console.log(err);
@@ -29,12 +44,14 @@ export default function document() {
 
   return (
     <>
-      <main>
-        <div className=" grid m-0 w-screen bg-cyan-600  grid-flow-col place-items-end text-center grid-cols-1">
-          Moshi Moshi
-        </div>
-        <NoSSR></NoSSR>
-      </main>
+      <NoSSR>
+        <main>
+          <div className=" grid m-0 w-screen bg-cyan-600  grid-flow-col place-items-end text-center grid-cols-1">
+            {document.heading}
+          </div>
+          {id ? <>{id}</> : <>nope</>}
+        </main>
+      </NoSSR>
     </>
   );
 }

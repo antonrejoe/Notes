@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, createContext, useContext } from "react";
 import { Client, Databases, Functions } from "appwrite";
 import { useRouter } from "next/router";
 const client = new Client();
 import Document from "./Document.jsx";
 const databases = new Databases(client);
+
 client
   .setEndpoint(process.env.NEXT_PUBLIC_END_PT)
   .setProject(process.env.NEXT_PUBLIC_PROJECT_ID);
 
 // ? for executing the fn.
-
 const functions = new Functions(client);
 
 function hello() {
@@ -30,6 +30,8 @@ const Document_list = () => {
 
   const [documents, setDocuments] = useState([]);
   const [docEmpty, setDocEmpty] = useState(true);
+  const [docIdSel, setdocIdSel] = useState();
+
   useEffect(() => {
     const list_Doc = databases.listDocuments(
       process.env.NEXT_PUBLIC_PRIMARY_DB_ID,

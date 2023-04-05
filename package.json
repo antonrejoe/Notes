@@ -24,6 +24,7 @@
     "node-appwrite": "^8.2.0",
     "react": "18.2.0",
     "react-appwrite": "^0.0.5",
+    "react-cookie": "^4.1.1",
     "react-dom": "18.2.0",
     "react-no-ssr": "^1.1.0",
     "react-promise": "^3.0.2",

@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import react, { useState } from "react";
 import Document_playground from "./Document_playground";
 import { Client, Databases } from "appwrite";
+import { Cookies } from "react-cookie";
 const client = new Client();
 client
   .setEndpoint(process.env.NEXT_PUBLIC_END_PT) // Your API Endpoint
@@ -10,9 +11,15 @@ client
 const databases = new Databases(client);
 
 const Document = ({ heading, id, createdAt }) => {
-  const [docView, setDocView] = useState(false);
   const router = useRouter();
-  function sendToDoc() {}
+  function sendToDoc() {
+    router.push(`/profile/${id}`);
+    const cookies = new Cookies();
+    router.reload();
+    setTimeout(() => {
+      const setId = cookies.set("id", id, { path: "/" });
+    }, 0);
+  }
   return (
     <>
       <main onClick={sendToDoc}>
