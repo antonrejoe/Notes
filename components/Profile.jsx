@@ -12,7 +12,9 @@ const Profile = () => {
   const router = useRouter();
   const account = new Account(client);
 
-  client.setEndpoint("http://localhost/v1").setProject("64212d46cfb5216a4094");
+  client
+    .setEndpoint(process.env.NEXT_PUBLIC_END_PT)
+    .setProject(process.env.NEXT_PUBLIC_PROJECT_ID);
 
   const [userDetails, setuserDetails] = useState();
 
@@ -42,10 +44,10 @@ const Profile = () => {
     <>
       {userDetails ? (
         <>
-          <main>
+          <main className="">
             {/* navbar */}
-            <div className=" grid m-0 w-screen bg-cyan-600  grid-flow-col place-items-end text-center grid-cols-1">
-              <h3 className="my-auto p-2">{userDetails.name}</h3>
+            <div className=" grid m-0 w-screen bg-gray-900   grid-flow-col place-items-end text-center grid-cols-1">
+              <h3 className="my-auto p-2 text-white">{userDetails.name}</h3>
               <button className="p-4 bg-blue-500" onClick={handleLogout}>
                 Logout
               </button>

@@ -1,12 +1,12 @@
+"use client";
+
 import React, { useState, useEffect } from "react";
-import { useRouter } from "next/router";
+import Document_playground from "../../../components/Document_playground";
 import NoSSR from "react-no-ssr";
 import { Client, Databases } from "appwrite";
 import { Cookies } from "react-cookie";
 
 const cookies = new Cookies();
-
-const id = cookies.get("id");
 
 const client = new Client();
 client
@@ -24,8 +24,9 @@ export default function document() {
     const db_sel = db.getDocument(
       process.env.NEXT_PUBLIC_PRIMARY_DB_ID,
       process.env.NEXT_PUBLIC_SECONDARY_COLLECTION_ID,
-      id
+      cookies.get("id")
     );
+
     db_sel.then(
       (res) => {
         console.log(" here is the doc", res);
@@ -45,11 +46,13 @@ export default function document() {
   return (
     <>
       <NoSSR>
-        <main>
-          <div className=" grid m-0 w-screen bg-cyan-600  grid-flow-col place-items-end text-center grid-cols-1">
-            {document.heading}
-          </div>
-          {id ? <>{id}</> : <>nope</>}
+        <main className="">
+          <div className=" grid m-0 w-screen bg-gray-900  grid-flow-col place-items-end text-center grid-cols-1 p-3"></div>
+          <Document_playground
+            content={document.content}
+            heading={document.heading}
+            createdAt={document.createdAt}
+          ></Document_playground>
         </main>
       </NoSSR>
     </>

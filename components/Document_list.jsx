@@ -26,11 +26,8 @@ function hello() {
 }
 
 const Document_list = () => {
-  const router = useRouter();
-
   const [documents, setDocuments] = useState([]);
   const [docEmpty, setDocEmpty] = useState(true);
-  const [docIdSel, setdocIdSel] = useState();
 
   useEffect(() => {
     const list_Doc = databases.listDocuments(
@@ -40,7 +37,10 @@ const Document_list = () => {
 
     list_Doc.then(
       (res) => {
-        setDocuments(res.documents);
+        setDocuments(
+          res.documents.reverse((a, b) => a.$createdAt - b.$createdAt) // code for adding new items at the top
+        );
+        console.log(documents);
         if (documents) {
           setDocEmpty(false);
         }

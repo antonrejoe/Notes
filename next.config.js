@@ -3,6 +3,14 @@ const nextConfig = {
   reactStrictMode: true,
 };
 
+const jotaiConfig = {
+  jsc: {
+    experimental: {
+      plugins: [["@swc-jotai/react-refresh", {}]],
+    },
+  },
+};
+
 const fsConfig = {
   webpack: (config, { isServer }) => {
     // Fixes npm packages that depend on `fs` module
@@ -16,4 +24,4 @@ const fsConfig = {
   },
 };
 
-(module.exports = nextConfig), fsConfig;
+(module.exports = nextConfig), fsConfig, jotaiConfig;

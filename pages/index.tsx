@@ -3,7 +3,9 @@ import Signup from "@/components/Signup";
 export default function Home() {
   return (
     <>
-      <Signup />
+      <main className="bg-blue-900">
+        <Signup />
+      </main>
     </>
   );
 }

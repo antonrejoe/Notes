@@ -22,7 +22,9 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "pages/profile/index.jsx"
+    "pages/profile/index.jsx",
+    "pages/_app.jsx",
+    "components/Textfield.jsx"
   ],
   "exclude": ["node_modules"]
 }
