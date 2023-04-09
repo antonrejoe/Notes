@@ -29,6 +29,8 @@ const Document_list = () => {
   const [documents, setDocuments] = useState([]);
   const [docEmpty, setDocEmpty] = useState(true);
 
+  const router = useRouter();
+
   useEffect(() => {
     const list_Doc = databases.listDocuments(
       process.env.NEXT_PUBLIC_PRIMARY_DB_ID,

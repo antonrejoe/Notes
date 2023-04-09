@@ -5,6 +5,7 @@ import { TextField } from "@mui/material";
 import { Cookies } from "react-cookie";
 import { atom, useAtom } from "jotai";
 import { sel_doc_ID } from "../../../components/Document";
+import { useRouter } from "next/router";
 const cookies = new Cookies();
 
 const client = new Client();
@@ -25,6 +26,7 @@ const databases = new Databases(client);
 
 export default function document() {
   const [doc_ID] = useAtom(sel_doc_ID);
+  const router = useRouter();
   const { data, isLoading, refetch, error } = useQuery({
     queryKey: [`getDoc${cookies.get("id_current")}`],
     queryFn: () =>
@@ -45,6 +47,19 @@ export default function document() {
     console.log("It's loading");
   }
 
+  function deleteDoc(id) {
+    databases
+      .deleteDocument(
+        process.env.NEXT_PUBLIC_PRIMARY_DB_ID,
+        process.env.NEXT_PUBLIC_SECONDARY_COLLECTION_ID,
+        id
+      )
+      .then(
+        (res) => console.log(res),
+        (err) => console.log(err)
+      );
+    router.push("/profile");
+  }
   function updateDoc(content) {
     databases
       .updateDocument(
@@ -78,6 +93,13 @@ export default function document() {
               <h1 className="text-4xl my-[3rem]"> {data.heading}</h1>
               <h4>{data.createdAt} </h4>
               <div>
+                <button
+                  onClick={() => {
+                    deleteDoc(doc_ID);
+                  }}
+                >
+                  delete
+                </button>
                 <TextField
                   id="outlined-multiline-flexible"
                   placeholder=""

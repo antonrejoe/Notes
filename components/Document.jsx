@@ -1,11 +1,11 @@
-import { useRouter } from "next/router";
 import react, { useState } from "react";
 import { Client, Databases } from "appwrite";
 import { useAtom, atom } from "jotai";
 import { Cookies } from "react-cookie";
 import { useQuery } from "@tanstack/react-query";
+import { useRouter } from "next/router";
+import { deleteDoc } from "./Document_list";
 const client = new Client();
-
 export const sel_doc_ID = atom("Untitled");
 
 client
@@ -18,10 +18,13 @@ const Document = ({ heading, id, createdAt }) => {
   const [docIdSel, setdocIdSel] = useAtom(sel_doc_ID);
   cookies.set("id_current", docIdSel);
   const router = useRouter();
-
   function sendToDoc() {
     cookies.set("id", id);
     router.push(`/profile/${id}`);
+    setdocIdSel(id);
+  }
+
+  function setID() {
     setdocIdSel(id);
   }
   return (
