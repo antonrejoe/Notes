@@ -6,7 +6,9 @@ import { Account, Client } from "appwrite";
 import { useRouter } from "next/navigation";
 import Dashboard from "./Dashboard";
 import Search from "./Search";
+import { Cookies } from "react-cookie";
 
+const cookies = new Cookies();
 const Profile = () => {
   const client = new Client();
   const router = useRouter();
@@ -34,7 +36,8 @@ const Profile = () => {
   const handleLogout = async () => {
     try {
       await account.deleteSession("current");
-      await router.push("/login");
+      router.push("/login");
+      cookies.remove("id");
     } catch (error) {
       console.log(error);
     }

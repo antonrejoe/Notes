@@ -3,6 +3,8 @@ import NoSSR from "react-no-ssr";
 import { Client, Databases } from "appwrite";
 import { TextField } from "@mui/material";
 import { Cookies } from "react-cookie";
+import { atom, useAtom } from "jotai";
+import { sel_doc_ID } from "../../../components/Document";
 const cookies = new Cookies();
 
 const client = new Client();
@@ -22,14 +24,15 @@ client
 const databases = new Databases(client);
 
 export default function document() {
+  const [doc_ID] = useAtom(sel_doc_ID);
   const { data, isLoading, refetch, error } = useQuery({
-    queryKey: [`getDoc${cookies.get("id")}`],
+    queryKey: [`getDoc${cookies.get("id_current")}`],
     queryFn: () =>
       databases
         .getDocument(
           process.env.NEXT_PUBLIC_PRIMARY_DB_ID,
           process.env.NEXT_PUBLIC_SECONDARY_COLLECTION_ID,
-          cookies.get("id")
+          cookies.get("id_current")
         )
         .then((res) => {
           console.log(res);
@@ -47,7 +50,7 @@ export default function document() {
       .updateDocument(
         process.env.NEXT_PUBLIC_PRIMARY_DB_ID,
         process.env.NEXT_PUBLIC_SECONDARY_COLLECTION_ID,
-        cookies.get("id"),
+        doc_ID,
         { content: content }
       )
       .then((res) => {
