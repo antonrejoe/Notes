@@ -3,11 +3,9 @@ import NoSSR from "react-no-ssr";
 import { Client, Databases } from "appwrite";
 import { TextField } from "@mui/material";
 import { Cookies } from "react-cookie";
-import { atom, useAtom } from "jotai";
 const cookies = new Cookies();
 
 const client = new Client();
-const contentAtom = atom("");
 
 import {
   useQueryClient,
@@ -15,13 +13,7 @@ import {
   useQuery,
   useMutation,
 } from "@tanstack/react-query";
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false, // default: true
-    },
-  },
-});
+const queryClient = new QueryClient();
 
 client
   .setEndpoint(process.env.NEXT_PUBLIC_END_PT)
@@ -30,10 +22,8 @@ client
 const databases = new Databases(client);
 
 export default function document() {
-  const [content, setContent] = useAtom(contentAtom);
-
   const { data, isLoading, refetch, error } = useQuery({
-    queryKey: ["getDoc"],
+    queryKey: [`getDoc${cookies.get("id")}`],
     queryFn: () =>
       databases
         .getDocument(
@@ -43,6 +33,7 @@ export default function document() {
         )
         .then((res) => {
           console.log(res);
+
           return res;
         }),
   });
@@ -51,42 +42,30 @@ export default function document() {
     console.log("It's loading");
   }
 
-  const {
-    data: updateData,
-    error: updateError,
-    isLoading: updateIsLoading,
-    refetch: updateRefetch,
-  } = useQuery({
-    queryKey: ["docUpdate"],
-    exact: true,
-    queryFn: async () =>
-      databases
-        .updateDocument(
-          process.env.NEXT_PUBLIC_PRIMARY_DB_ID,
-          process.env.NEXT_PUBLIC_SECONDARY_COLLECTION_ID,
-          cookies.get("id"),
-          { content: content }
-        )
-        .then((res) => {
-          console.log(res);
-          return res;
-        }),
+  function updateDoc(content) {
+    databases
+      .updateDocument(
+        process.env.NEXT_PUBLIC_PRIMARY_DB_ID,
+        process.env.NEXT_PUBLIC_SECONDARY_COLLECTION_ID,
+        cookies.get("id"),
+        { content: content }
+      )
+      .then((res) => {
+        console.log(res);
+        return res;
+      });
+  }
+  const mutateContent = useMutation({
+    mutationFn: updateDoc,
+    onMutate: () => console.log("nothing bruh"),
+    onSuccess: () => {
+      refetch(), queryClient.invalidateQueries(`getDoc${cookies.get("id")}`);
+    },
   });
 
-  // const {
-  //   data: dataUpdate,
-  //   error: errorUpdate,
-  //   isLoading: updatingIsLoading,
-  //   refetch: refetchUpdate,
-  // } = useQuery({
-  //   queryKey: ["update_doc"],
-  //   queryFn: () =>
-
-  if (!!data && !!updateData) {
+  if (!!data) {
     console.log(`The data is ${data.content}`);
 
-    if (!!content) {
-    }
     return (
       <>
         <NoSSR>
@@ -107,10 +86,11 @@ export default function document() {
                   // defaultValue={data.content}
                   defaultValue={data.content}
                   onChange={(e) => {
-                    setContent(e.target.value);
+                    setTimeout(() => {
+                      mutateContent.mutate(e.target.value);
+                    }, 1000);
                   }}
                 />
-                <h1>{data.content}</h1>
               </div>
             </main>
           </main>
