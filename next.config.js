@@ -24,4 +24,14 @@ const fsConfig = {
   },
 };
 
-(module.exports = nextConfig), fsConfig, jotaiConfig;
+const corsConfig = {
+  async rewrites() {
+    return [
+      {
+        source: "https://ms-1b476e5207e5-3106.sfo.meilisearch.io",
+        destination: "https://localhost:3000/*",
+      },
+    ];
+  },
+};
+(module.exports = nextConfig), fsConfig, jotaiConfig, corsConfig;

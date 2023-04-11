@@ -5,7 +5,6 @@ import { useState, useEffect } from "react";
 import { Account, Client } from "appwrite";
 import { useRouter } from "next/navigation";
 import Dashboard from "./Dashboard";
-import Search from "./Search";
 import { Cookies } from "react-cookie";
 
 const cookies = new Cookies();

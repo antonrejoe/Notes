@@ -32,7 +32,7 @@ const Document = ({ heading, id, createdAt }) => {
       <main onClick={sendToDoc}>
         <main className="grid place-items-center  w-screen">
           <div className="  p-4 rounded my-1 flex-col w-[75vw] h-auto bg-blue-300 m-5 hover:cursor-pointer hover:scale-[1.01] transition-all ">
-            <h1 className="text-2xl pl-0 p-3">{heading}</h1>
+            <h1 className="text-2xl pl-0 p-3 w-[50vw]">{heading}</h1>
             <p>{id}</p>
             <p> {createdAt}</p>
           </div>
