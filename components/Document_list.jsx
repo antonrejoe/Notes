@@ -1,18 +1,17 @@
 import React, { useState, useEffect, createContext, useContext } from "react";
-import { instantMeiliSearch } from "@meilisearch/instant-meilisearch";
 import { Client, Databases, Functions } from "appwrite";
 import { useRouter } from "next/router";
 const client = new Client();
 import Document from "./Document.jsx";
 const databases = new Databases(client);
-import App from "./meiliSearch.jsx";
-import { movieWrite } from "../lib/addTodataBase.js";
+
 client
   .setEndpoint(process.env.NEXT_PUBLIC_END_PT)
   .setProject(process.env.NEXT_PUBLIC_PROJECT_ID);
 
 // ? for executing the fn.
 const functions = new Functions(client);
+
 function hello() {
   const promise = functions.createExecution("642971feaa0d543c7f19");
 
@@ -25,11 +24,13 @@ function hello() {
     }
   );
 }
+
 const Document_list = () => {
   const [documents, setDocuments] = useState([]);
-
   const [docEmpty, setDocEmpty] = useState(true);
+
   const router = useRouter();
+
   useEffect(() => {
     const list_Doc = databases.listDocuments(
       process.env.NEXT_PUBLIC_PRIMARY_DB_ID,
@@ -51,22 +52,18 @@ const Document_list = () => {
       }
     );
   }, [docEmpty]);
-
   if (!docEmpty) {
     return (
-      <>
-        <App />
-        <main className=" grid grid-flow-row my-[80px] ">
-          {documents.map((doc, key) => (
-            <Document
-              key={key}
-              heading={doc.heading}
-              id={doc.$id}
-              createdAt={doc.$createdAt}
-            />
-          ))}
-        </main>
-      </>
+      <main className=" grid grid-flow-row my-[80px] ">
+        {documents.map((doc, key) => (
+          <Document
+            key={key}
+            heading={doc.heading}
+            id={doc.$id}
+            createdAt={doc.$createdAt}
+          />
+        ))}
+      </main>
     );
   }
 };
