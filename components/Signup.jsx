@@ -9,7 +9,6 @@ const sdk = require("node-appwrite");
 const client_sdk = new sdk.Client();
 const client = new Client();
 const account = new Account(client);
-
 client
   .setEndpoint(process.env.NEXT_PUBLIC_END_PT)
   .setProject(process.env.NEXT_PUBLIC_PROJECT_ID);
@@ -103,13 +102,13 @@ const Signup = () => {
   };
   return (
     <>
-      <div className=" grid place-items-center w-min m-auto text-start  px-4 mt-7">
+      <div className=" grid place-items-center w-min  text-start h-screen  px-4 mt-7">
         <div>
           <label className="m-2 mx-0 p-2 ml-0 pl-0 " htmlFor="name">
             Name
           </label>
           <input
-            className="my-4  p-3 bg-blue-100  rounded"
+            className="my-1  p-3 bg-blue-100  rounded"
             id="name"
             name="name"
             type="text"
