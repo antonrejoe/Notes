@@ -3,8 +3,6 @@ import AddIcon from "@mui/icons-material/Add";
 import { useState, useEffect } from "react";
 import { Account, Client, Databases, Permission, Role } from "appwrite";
 import { useRouter } from "next/router";
-// const sdk = require("node-appwrite");
-// const client_sdk = new sdk.Client();
 const client = new Client();
 const account = new Account(client);
 
@@ -12,22 +10,7 @@ client
   .setEndpoint(process.env.NEXT_PUBLIC_END_PT)
   .setProject(process.env.NEXT_PUBLIC_PROJECT_ID);
 
-// client_sdk
-//   .setEndpoint(process.env.NEXT_PUBLIC_END_PT)
-//   .setProject(process.env.NEXT_PUBLIC_PROJECT_ID)
-//   .setKey(process.env.NEXT_PUBLIC_API_KEY);
-
-const promise = account.createJWT();
 const databases = new Databases(client);
-
-promise.then(
-  (response) => {
-    const jwt = response.jwt;
-  },
-  (err) => {
-    console.log(err);
-  }
-);
 const Dashboard = () => {
   const router = useRouter();
 

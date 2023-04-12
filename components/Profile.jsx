@@ -64,7 +64,6 @@ const Profile = () => {
       ) : (
         <>
           <div className="">
-            <img src="/Ancient-Aliens.jpg" alt="Ancient aliens were real" />
             consider Signing in or else aliens will take you away
             <p> </p>
           </div>

@@ -1,6 +1,24 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  modularizeImports: {
+    "@mui/icons-material": {
+      transform: "@mui/icons-material/{{memeber}}",
+    },
+  },
+  async headers() {
+    return [
+      {
+        source: "/",
+        headers: [
+          {
+            key: "Access-Control-Allow-Origin",
+            value: "*",
+          },
+        ],
+      },
+    ];
+  },
 };
 
 const jotaiConfig = {
