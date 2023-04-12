@@ -48,8 +48,8 @@ const Profile = () => {
       {userDetails ? (
         <>
           <main className="">
-            {/* navbar */}
             <div className=" grid m-0 w-screen bg-gray-900   grid-flow-col place-items-end text-center grid-cols-1">
+              <Search />
               <h3 className="my-auto p-2 text-white">{userDetails.name}</h3>
               <button className="p-4 bg-blue-500" onClick={handleLogout}>
                 Logout
